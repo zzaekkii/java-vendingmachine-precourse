@@ -6,7 +6,8 @@ public enum ErrorMessage {
     NOT_NUMBER("금액은 숫자여야 합니다."),
     NOT_MOD_TEN("10원으로 나눠떨어지지 않습니다."),
     OUT_OF_STOCK("선택한 상품의 재고가 없습니다."),
-    LACK_OF_MONEY("선택한 상품의 가격보다 잔액이 적습니다.");
+    LACK_OF_MONEY("선택한 상품의 가격보다 잔액이 적습니다."),
+    ETC("작업 중 오류가 발생했습니다.");
 
 
     private static final String PREFIX = "[ERROR] ";
