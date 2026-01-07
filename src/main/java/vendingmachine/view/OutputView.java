@@ -16,9 +16,6 @@ public class OutputView {
     public void printMachineCoins(Map<Coin, Integer> coins) {
         System.out.println("\n자판기가 보유한 동전");
         for (Coin coin : Coin.values()) {
-            if (coins.get(coin) == 0) {
-                continue;
-            }
             System.out.println(coin.getAmount() + "원 - " + coins.get(coin) + "개");
         }
         System.out.println();

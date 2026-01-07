@@ -32,6 +32,7 @@ public class VendingMachine {
         // 잔액(money)만큼 최소 동전 개수로 잔돈 생성 - 한국 동전 그리디로 가능함
         Map<Coin, Integer> charges = new HashMap<>();
         for (Coin coin : Coin.values()) {
+            charges.put(coin, 0);
             if (coins.get(coin) == 0) {
                 continue;
             }
@@ -39,7 +40,7 @@ public class VendingMachine {
                 continue;
             }
 
-            int count = money / coins.get(coin);
+            int count = money / coin.getAmount();
             charges.put(coin, count);
             money -= coin.getAmount() * count;
 

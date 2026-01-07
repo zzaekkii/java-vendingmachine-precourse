@@ -30,7 +30,8 @@ public class InputView {
         for (String value : values) {
             validateSeparator(value);
 
-            String[] tokens = value.split(",");
+            String[] tokens = value.substring(1, value.length() - 1).split(",");
+
             String name = tokens[0];
             int price = validatePositiveInteger(tokens[1]);
             validateProductPrice(price);
@@ -55,13 +56,13 @@ public class InputView {
 
     private void validateProductPrice(int price) {
         validateModTen(price);
-        if (price >= MINIMUM_PRICE) {
+        if (price < MINIMUM_PRICE) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_PRODUCT_PRICE.getMessage());
         }
     }
 
     private static int validatePositiveInteger(String input) {
-        int num = 0;
+        int num;
         try {
             num = Integer.parseInt(input);
         } catch (NumberFormatException e) {
