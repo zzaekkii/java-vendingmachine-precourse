@@ -39,4 +39,15 @@ public class OutputView {
     public void printProductNameRequest() {
         System.out.println("구매할 상품명을 입력해 주세요.");
     }
+
+    public void printCharges(Map<Coin, Integer> charges) {
+        System.out.println("잔돈");
+        for (Coin coin : Coin.values()) {
+            if (charges.get(coin) == 0) {
+                continue;
+            }
+            System.out.println(coin.getAmount() + "원 - " + charges.get(coin) + "개");
+        }
+        System.out.println();
+    }
 }

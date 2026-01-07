@@ -1,5 +1,6 @@
 package vendingmachine.domain;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,27 @@ public class VendingMachine {
                 money -= product.getPrice();
             }
         }
+    }
+
+    public Map<Coin, Integer> returnCharge() {
+        // 잔액(money)만큼 최소 동전 개수로 잔돈 생성 - 한국 동전 그리디로 가능함
+        Map<Coin, Integer> charges = new HashMap<>();
+        for (Coin coin : Coin.values()) {
+            if (coins.get(coin) == 0) {
+                continue;
+            }
+            if (coin.getAmount() > money) {
+                continue;
+            }
+
+            int count = money / coins.get(coin);
+            charges.put(coin, count);
+            money -= coin.getAmount() * count;
+
+            // 이번 문제에선 필요없지만, 그래도 자판기 실제 보유량에서 차감되도록 반영
+            coins.put(coin, coins.get(coin) - count);
+        }
+        return charges;
     }
 
     public boolean cantContinue() {

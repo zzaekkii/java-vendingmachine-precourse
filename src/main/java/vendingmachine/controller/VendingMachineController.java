@@ -31,7 +31,7 @@ public class VendingMachineController {
 
             purchaseProduct(machine);
         }
-        // 잔돈 생성 및 출력
+        outputView.printCharges(machine.returnCharge());
     }
 
     private void purchaseProduct(VendingMachine machine) {
@@ -43,6 +43,7 @@ public class VendingMachineController {
                     throw new IllegalArgumentException(ErrorMessage.PRODUCT_NOT_FOUND.getMessage());
                 }
                 machine.sold(productName);
+                return;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
