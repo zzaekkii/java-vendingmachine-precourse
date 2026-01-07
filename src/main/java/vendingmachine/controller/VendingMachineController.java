@@ -5,6 +5,7 @@ import java.util.Map;
 import vendingmachine.domain.Coin;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.VendingMachine;
+import vendingmachine.exception.ErrorMessage;
 import vendingmachine.view.InputView;
 import vendingmachine.view.OutputView;
 
@@ -20,8 +21,32 @@ public class VendingMachineController {
 
     public void run() {
         VendingMachine machine = initializeMachine();
+        machine.putMoney(getMoney());
+        while (true) {
+            outputView.printCurrentMoney(machine.getMoney());
 
-        int money = getMoney();
+            if (machine.cantContinue()) {
+                break;
+            }
+
+            purchaseProduct(machine);
+        }
+        // 잔돈 생성 및 출력
+    }
+
+    private void purchaseProduct(VendingMachine machine) {
+        while (true) {
+            outputView.printProductNameRequest();
+            try {
+                String productName = inputView.readProductName();
+                if (!machine.isExistProduct(productName)) {
+                    throw new IllegalArgumentException(ErrorMessage.PRODUCT_NOT_FOUND.getMessage());
+                }
+                machine.sold(productName);
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
     private VendingMachine initializeMachine() {
@@ -29,7 +54,7 @@ public class VendingMachineController {
         Map<Coin, Integer> coins = Coin.makeCoins(machineAmount);
         outputView.printMachineCoins(coins);
         List<Product> products = getProducts();
-        return new VendingMachine(coins, products, machineAmount);
+        return new VendingMachine(coins, products);
     }
 
     private int getMoney() {

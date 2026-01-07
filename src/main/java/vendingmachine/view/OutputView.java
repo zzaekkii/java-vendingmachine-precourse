@@ -31,4 +31,12 @@ public class OutputView {
     public void printPutMoneyRequest() {
         System.out.println("\n투입 금액을 입력해 주세요.");
     }
+
+    public void printCurrentMoney(int money) {
+        System.out.println("\n투입 금액: " + money + "원");
+    }
+
+    public void printProductNameRequest() {
+        System.out.println("구매할 상품명을 입력해 주세요.");
+    }
 }

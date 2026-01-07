@@ -13,12 +13,12 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void sold(int balance) {
+    public void sold(int money) {
         if (quantity == 0) {
             throw new IllegalArgumentException(ErrorMessage.OUT_OF_STOCK.getMessage());
         }
 
-        if (balance < price) {
+        if (money < price) {
             throw new IllegalArgumentException(ErrorMessage.LACK_OF_MONEY.getMessage());
         }
 
@@ -27,5 +27,13 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }
