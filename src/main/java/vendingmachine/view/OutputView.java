@@ -27,4 +27,8 @@ public class OutputView {
     public void printRegisterProductsRequest() {
         System.out.println("상품명과 가격, 수량을 입력해 주세요.");
     }
+
+    public void printPutMoneyRequest() {
+        System.out.println("\n투입 금액을 입력해 주세요.");
+    }
 }

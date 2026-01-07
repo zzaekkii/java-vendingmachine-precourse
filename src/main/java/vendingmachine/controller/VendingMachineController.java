@@ -21,6 +21,7 @@ public class VendingMachineController {
     public void run() {
         VendingMachine machine = initializeMachine();
 
+        int money = getMoney();
     }
 
     private VendingMachine initializeMachine() {
@@ -29,6 +30,17 @@ public class VendingMachineController {
         outputView.printMachineCoins(coins);
         List<Product> products = getProducts();
         return new VendingMachine(coins, products, machineAmount);
+    }
+
+    private int getMoney() {
+        while (true) {
+            outputView.printPutMoneyRequest();
+            try {
+                return inputView.readMoney();
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
     private List<Product> getProducts() {

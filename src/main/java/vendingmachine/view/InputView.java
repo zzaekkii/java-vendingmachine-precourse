@@ -42,6 +42,13 @@ public class InputView {
         return products;
     }
 
+    public int readMoney() {
+        String input = readAndValidate();
+        int money = validatePositiveInteger(input);
+        validateModTen(money);
+        return money;
+    }
+
     private void validateProductPrice(int price) {
         validateModTen(price);
         if (price >= MINIMUM_PRICE) {
