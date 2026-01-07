@@ -1,7 +1,10 @@
 package vendingmachine.controller;
 
+import java.util.List;
 import java.util.Map;
 import vendingmachine.domain.Coin;
+import vendingmachine.domain.Product;
+import vendingmachine.domain.VendingMachine;
 import vendingmachine.view.InputView;
 import vendingmachine.view.OutputView;
 
@@ -16,11 +19,27 @@ public class VendingMachineController {
     }
 
     public void run() {
+        VendingMachine machine = initializeMachine();
+
+    }
+
+    private VendingMachine initializeMachine() {
         int machineAmount = getMachineAmount();
         Map<Coin, Integer> coins = Coin.makeCoins(machineAmount);
-
         outputView.printMachineCoins(coins);
+        List<Product> products = getProducts();
+        return new VendingMachine(coins, products, machineAmount);
+    }
 
+    private List<Product> getProducts() {
+        while (true) {
+            outputView.printRegisterProductsRequest();
+            try {
+                return inputView.readRegisterProducts();
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
     private int getMachineAmount() {

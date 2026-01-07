@@ -2,34 +2,81 @@ package vendingmachine.view;
 
 
 import camp.nextstep.edu.missionutils.Console;
+import java.util.ArrayList;
+import java.util.List;
+import vendingmachine.domain.Coin;
+import vendingmachine.domain.Product;
 import vendingmachine.exception.ErrorMessage;
 
 public class InputView {
 
+    private static final int MINIMUM_PRICE = Coin.COIN_100.getAmount();
+
     public int readMachineAmount() {
         String input = readAndValidate();
 
-        int amount = validateInteger(input);
+        int amount = validatePositiveInteger(input);
 
         validateModTen(amount);
 
         return amount;
     }
 
-    private static int validateInteger(String input) {
+    public List<Product> readRegisterProducts() {
+        String input = readAndValidate();
 
-        int amount = 0;
-        try {
-            amount = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ErrorMessage.NOT_NUMBER.getMessage());
+        List<Product> products = new ArrayList<>();
+        String[] values = input.split(";");
+        for (String value : values) {
+            validateSeparator(value);
+
+            String[] tokens = value.split(",");
+            String name = tokens[0];
+            int price = validatePositiveInteger(tokens[1]);
+            validateProductPrice(price);
+            int quantity = validatePositiveInteger(tokens[2]);
+
+            products.add(new Product(name, price, quantity));
         }
-        return amount;
+
+        return products;
+    }
+
+    private void validateProductPrice(int price) {
+        validateModTen(price);
+        if (price >= MINIMUM_PRICE) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_PRODUCT_PRICE.getMessage());
+        }
+    }
+
+    private static int validatePositiveInteger(String input) {
+        int num = 0;
+        try {
+            num = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_POSITIVE_NUMBER.getMessage());
+        }
+
+        if (num <= 0) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_POSITIVE_NUMBER.getMessage());
+        }
+
+        return num;
     }
 
     private static void validateModTen(int amount) {
         if (amount % 10 > 0) {
             throw new IllegalArgumentException(ErrorMessage.NOT_MOD_TEN.getMessage());
+        }
+    }
+
+    private static void validateSeparator(String value) {
+        if (!value.startsWith("[") || !value.endsWith("]")) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FORMAT.getMessage());
+        }
+
+        if (value.contains(",,")) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FORMAT.getMessage());
         }
     }
 
